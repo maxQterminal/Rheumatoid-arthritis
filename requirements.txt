@@ -1,0 +1,39 @@
+# Core ML & Data
+numpy>=2.2.0
+pandas>=2.2.0
+scikit-learn>=1.4.0
+scipy>=1.14.0
+
+# Deep Learning (PyTorch)
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Gradient Boosting
+xgboost>=2.0.0
+
+# Image Processing
+Pillow>=11.0.0
+opencv-python>=4.8.0
+
+# Web Framework (Optional - only if deploying Flask API)
+Flask>=3.0.0
+Flask-Cors>=4.0.0
+requests>=2.30.0
+
+# Model Serialization
+joblib>=1.3.0
+
+# Web UI (Primary - Streamlit Dashboard)
+streamlit>=1.28.0
+
+# Visualization (for evaluation dashboard)
+matplotlib>=3.7.0
+seaborn>=0.13.0
+
+# Configuration & Environment
+python-dotenv>=1.0.0
+
+# Note: PyTorch versions may need manual installation:
+# CPU: pip install torch torchvision
+# GPU (CUDA 12.1): pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+# More: https://pytorch.org/get-started/locally/
