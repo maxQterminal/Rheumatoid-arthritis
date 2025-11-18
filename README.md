@@ -1,5 +1,7 @@
 # Rheumatoid Arthritis Diagnosis System - Quick Start
 
+For data access, the full data folder is available at [google-drive](https://drive.google.com/drive/folders/1vP4q1CzZiUh1e1OyM84okWWBBQDayGhj?usp=sharing) add that to the project root folder if needed.
+
 > **For comprehensive technical documentation**, see **[PROJECT_INFO.md](PROJECT_INFO.md)**
 
 ---
@@ -38,40 +40,40 @@ Opens at `http://localhost:8501`
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                        USER INTERACTION (UI)                           │
+│                        USER INTERACTION (UI)                            │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│  Tab 1: Lab Assessment              Tab 2: X-ray Analysis             │
-│  ┌─────────────────────────┐       ┌──────────────────────────┐       │
-│  │ Input 6 Biomarkers:     │       │ Upload Hand X-ray Image:  │       │
-│  │ • Age (years)           │       │ • JPG/PNG/BMP format      │       │
-│  │ • Gender (M/F)          │       │ • 224×224 or larger       │       │
-│  │ • RF (IU/mL)            │       │                            │       │
-│  │ • Anti-CCP (IU/mL)      │       │ Click: "Analyze X-ray"    │       │
-│  │ • CRP (mg/L)            │       │                            │       │
-│  │ • ESR (mm/hr)           │       │                            │       │
-│  │                         │       │                            │       │
-│  │ Click: "Get Diagnosis"  │       │                            │       │
-│  └─────────────────────────┘       └──────────────────────────┘       │
-│            ↓                                 ↓                         │
+│  Tab 1: Lab Assessment              Tab 2: X-ray Analysis               │
+│  ┌─────────────────────────┐       ┌─────────────────────────-─┐        │
+│  │ Input 6 Biomarkers:     │       │ Upload Hand X-ray Image:  │        │
+│  │ • Age (years)           │       │ • JPG/PNG/BMP format      │        │
+│  │ • Gender (M/F)          │       │ • 224×224 or larger       │        │
+│  │ • RF (IU/mL)            │       │                           │        │
+│  │ • Anti-CCP (IU/mL)      │       │ Click: "Analyze X-ray"    │        │
+│  │ • CRP (mg/L)            │       │                           │        │
+│  │ • ESR (mm/hr)           │       │                           │        │
+│  │                         │       │                           │        │
+│  │ Click: "Get Diagnosis"  │       │                           │        │
+│  └─────────────────────────┘       └──────────────────────────-┘        │
+│            ↓                                 ↓                          │
 └─────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                    DATA PREPROCESSING (Backend)                         │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│  NUMERIC DATA (Blood Tests)       IMAGE DATA (X-ray)                  │
-│  ─────────────────────────       ─────────────────────                │
-│  Input: [Age, Gender, RF, ...]   Input: Image pixels                  │
-│         ↓                                ↓                             │
-│  1. StandardScaler normalization  1. Resize to 224×224                │
-│     (subtract mean, divide by std) 2. Convert to 3-channel RGB        │
-│         ↓                           3. Apply ImageNet normalization    │
-│  Normalized values ready           ↓                                   │
-│  for model input                   Preprocessed image ready            │
-│                                    for model input                     │
+│  NUMERIC DATA (Blood Tests)       IMAGE DATA (X-ray)                    │
+│  ─────────────────────────       ─────────────────────                  │
+│  Input: [Age, Gender, RF, ...]   Input: Image pixels                    │
+│         ↓                                ↓                              │
+│  1. StandardScaler normalization  1. Resize to 224×224                  │
+│     (subtract mean, divide by std) 2. Convert to 3-channel RGB          │
+│         ↓                           3. Apply ImageNet normalization     │
+│  Normalized values ready           ↓                                    │
+│  for model input                   Preprocessed image ready             │
+│                                    for model input                      │
 │                                                                         │
-│  See PROJECT_INFO.md "Data Preprocessing" section for details         │
+│  See PROJECT_INFO.md "Data Preprocessing" section for details           │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 
@@ -79,25 +81,25 @@ Opens at `http://localhost:8501`
 │                     MODEL INFERENCE (Prediction)                        │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│  PATH 1: Numeric Model              PATH 2: Imaging Model              │
-│  ─────────────────────────          ──────────────────────             │
-│  Preprocessed biomarkers             Preprocessed image                │
-│           ↓                                  ↓                         │
-│    ┌──────────────┐              ┌──────────────────┐                │
-│    │   XGBoost    │              │ EfficientNet-B3  │                │
-│    │   Classifier │              │     CNN          │                │
-│    │ (100 trees)  │              │  (10.3M params)  │                │
-│    └──────────────┘              └──────────────────┘                │
-│           ↓                                  ↓                         │
-│   Multiclass Output:              Binary Output:                      │
-│   P(Healthy) = 0.15               P(Erosive) = 0.72                   │
-│   P(Seroneg) = 0.25               (72% confident)                     │
-│   P(Seropos) = 0.60 ← Max                 ↓                           │
-│           ↓                       Decision Threshold = 0.35            │
-│           ↓                       Since 0.72 > 0.35:                  │
-│   Prediction:                     Predict: "EROSIVE"                  │
-│   "SEROPOSITIVE"                          ↓                           │
-│   (60% confident)                 Confidence = 0.72                   │
+│  PATH 1: Numeric Model              PATH 2: Imaging Model               │
+│  ─────────────────────────          ──────────────────────              │
+│  Preprocessed biomarkers             Preprocessed image                 │
+│           ↓                                  ↓                          │
+│    ┌──────────────┐              ┌──────────────────┐                   │
+│    │   XGBoost    │              │ EfficientNet-B3  │                   │
+│    │   Classifier │              │     CNN          │                   │
+│    │ (100 trees)  │              │  (10.3M params)  │                   │    
+│    └──────────────┘              └──────────────────┘                   │    
+│           ↓                                  ↓                          │
+│   Multiclass Output:              Binary Output:                        │
+│   P(Healthy) = 0.15               P(Erosive) = 0.72                     │
+│   P(Seroneg) = 0.25               (72% confident)                       │
+│   P(Seropos) = 0.60 ← Max                 ↓                             │
+│           ↓                       Decision Threshold = 0.35             │
+│           ↓                       Since 0.72 > 0.35:                    │
+│   Prediction:                     Predict: "EROSIVE"                    │
+│   "SEROPOSITIVE"                          ↓                             │
+│   (60% confident)                 Confidence = 0.72                     │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 
@@ -105,42 +107,42 @@ Opens at `http://localhost:8501`
 │                     USER OUTPUT (UI Display)                            │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│  Lab Assessment Tab Shows:       X-ray Analysis Tab Shows:            │
-│  ┌──────────────────────┐       ┌──────────────────────┐              │
-│  │ Diagnosis Result:    │       │ X-ray Classification:│              │
-│  │ ✓ SEROPOSITIVE RA    │       │ ✓ EROSIVE            │              │
-│  │                      │       │                      │              │
-│  │ Confidence: 60%      │       │ Confidence: 72%      │              │
-│  │                      │       │ Decision: Threshold  │              │
-│  │ Breakdown:           │       │          = 0.35      │              │
-│  │ • P(Healthy) = 15%   │       │                      │              │
-│  │ • P(Seroneg) = 25%   │       │ Interpretation:      │              │
-│  │ • P(Seropos) = 60%   │       │ "Joint erosions      │              │
-│  │                      │       │  are present"        │              │
-│  │ Clinical Action:     │       │                      │              │
-│  │ → Start DMARD        │       │ Clinical Action:     │              │
-│  │   therapy            │       │ → Confirm with       │              │
-│  │ → Monitor closely    │       │   radiologist        │              │
-│  │ → Follow-up in 6 wks │       │ → Adjust treatment   │              │
-│  └──────────────────────┘       └──────────────────────┘              │
+│  Lab Assessment Tab Shows:       X-ray Analysis Tab Shows:              │
+│  ┌──────────────────────┐       ┌──────────────────────┐                │
+│  │ Diagnosis Result:    │       │ X-ray Classification:│                │
+│  │ ✓ SEROPOSITIVE RA    │       │ ✓ EROSIVE            │                │
+│  │                      │       │                      │                │
+│  │ Confidence: 60%      │       │ Confidence: 72%      │                │
+│  │                      │       │ Decision: Threshold  │                │
+│  │ Breakdown:           │       │          = 0.35      │                │
+│  │ • P(Healthy) = 15%   │       │                      │                │
+│  │ • P(Seroneg) = 25%   │       │ Interpretation:      │                │
+│  │ • P(Seropos) = 60%   │       │ "Joint erosions      │                │
+│  │                      │       │  are present"        │                │
+│  │ Clinical Action:     │       │                      │                │
+│  │ → Start DMARD        │       │ Clinical Action:     │                │
+│  │   therapy            │       │ → Confirm with       │                │
+│  │ → Monitor closely    │       │   radiologist        │                │
+│  │ → Follow-up in 6 wks │       │ → Adjust treatment   │                │
+│  └──────────────────────┘       └──────────────────────┘                │
 │                                                                         │
-│  Combined Results Tab Shows:                                           │
-│  ┌──────────────────────────────────────────┐                        │
-│  │ OVERALL RA DIAGNOSIS SUMMARY             │                        │
-│  │                                          │                        │
-│  │ Blood Tests: SEROPOSITIVE (60%)          │                        │
-│  │ Hand X-rays: EROSIVE (72%)               │                        │
-│  │                                          │                        │
-│  │ Combined Assessment:                     │                        │
-│  │ ✓ HIGH RA LIKELIHOOD                     │                        │
-│  │   - Positive autoimmune markers          │                        │
-│  │   - Visible joint erosions               │                        │
-│  │                                          │                        │
-│  │ Recommendation:                          │                        │
-│  │ → Advanced RA suspected                  │                        │
-│  │ → Aggressive treatment indicated         │                        │
-│  │ → Consider rheumatology referral         │                        │
-│  └──────────────────────────────────────────┘                        │
+│  Combined Results Tab Shows:                                            │
+│  ┌──────────────────────────────────────────┐                           │
+│  │ OVERALL RA DIAGNOSIS SUMMARY             │                           │
+│  │                                          │                           │
+│  │ Blood Tests: SEROPOSITIVE (60%)          │                           │
+│  │ Hand X-rays: EROSIVE (72%)               │                           │
+│  │                                          │                           │
+│  │ Combined Assessment:                     │                           │
+│  │ ✓ HIGH RA LIKELIHOOD                     │                           │
+│  │   - Positive autoimmune markers          │                           │
+│  │   - Visible joint erosions               │                           │
+│  │                                          │                           │
+│  │ Recommendation:                          │                           │
+│  │ → Advanced RA suspected                  │                           │
+│  │ → Aggressive treatment indicated         │                           │
+│  │ → Consider rheumatology referral         │                           │
+│  └──────────────────────────────────────────┘                           │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
